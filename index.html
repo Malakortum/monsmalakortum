@@ -3,48 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>มอนสเตอร์หิวขยะ</title>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600;800&family=Pixelify+Sans:wght@700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<title>มอนสเตอร์หิวขยะ กู้เมืองสะอาด</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  html,body{margin:0;height:100%;overflow:hidden;background:#05071a;font-family:"Pixelify Sans","Kanit",Tahoma,sans-serif;color:#fff}
-  canvas{position:fixed;inset:0;width:100vw;height:100vh;image-rendering:pixelated;image-rendering:crisp-edges}
-  body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px);z-index:5}
+  html,body{margin:0;height:100%;overflow:hidden;background:#6b6f73;font-family:"Kanit",Tahoma,sans-serif;color:#fff}
+  canvas{position:fixed;inset:0;width:100vw;height:100vh}
   video{display:none}
-  .card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;width:min(900px,90vw);max-height:92vh;overflow:auto;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:26px;background:#1a1340;color:#fff;border:6px solid #fff;outline:6px solid #000;box-shadow:16px 16px 0 #000}
-  .card h1{margin:0;line-height:0}
-  .card h1 canvas{position:static;width:auto;height:auto}
-  .card p{font-size:clamp(17px,2vw,24px);margin:0;line-height:1.45}
+  .card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;width:min(880px,90vw);max-height:92vh;overflow:auto;box-sizing:border-box;
+        display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:30px 28px;
+        background:rgba(255,255,255,.94);color:#24323f;border-radius:28px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+  .card h1{margin:0;font-size:clamp(34px,5.4vw,62px);font-weight:800;line-height:1.15;color:#2f9e5b}
+  .card p{font-size:clamp(17px,2vw,23px);margin:0;line-height:1.5}
   .row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center}
-  button{font:inherit;font-family:"Kanit",Tahoma,sans-serif;font-size:clamp(18px,2.1vw,26px);padding:10px 24px;border:4px solid #000;border-radius:0;cursor:pointer;background:#ffcf33;color:#000;font-weight:800;box-shadow:inset -5px -5px 0 rgba(0,0,0,.3),inset 5px 5px 0 rgba(255,255,255,.5),6px 6px 0 #000}
-  button:active{transform:translate(4px,4px);box-shadow:inset 5px 5px 0 rgba(0,0,0,.3),2px 2px 0 #000}
-  button.blue{background:#4fd7ff} button.pink{background:#ff5fa2}
-  button.tog{font-size:clamp(15px,1.6vw,20px);padding:8px 16px;background:#c9c3e6;box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),4px 4px 0 #000}
-  button.tog.on{background:#7be39a}
-  .card p,.label,.lbtitle,table{font-family:"Kanit",Tahoma,sans-serif}
-  button.small{font-size:18px;padding:8px 18px}
-  .label{font-weight:700;font-size:18px}
-  input{font:inherit;font-size:24px;padding:10px 14px;border:4px solid #000;border-radius:0;width:min(320px,60vw);background:#fff;color:#000;font-family:"Kanit",Tahoma,sans-serif}
-  table{border-collapse:collapse;font-size:clamp(15px,1.6vw,20px);min-width:min(460px,80vw)}
-  th,td{padding:4px 12px;border-bottom:2px dashed #5a4f9a}
-  th{border-bottom:4px solid #fff;color:#ffcf33}
-  tr.me td{background:#ffcf33;color:#000;font-weight:800}
-  .lbtitle{font-weight:700;font-size:20px;margin-top:4px}
+  button{font:inherit;font-size:clamp(19px,2.2vw,26px);font-weight:800;padding:12px 30px;border:0;border-radius:999px;cursor:pointer;color:#fff;
+         background:#2f9e5b;box-shadow:0 6px 0 #1f7442,0 10px 20px rgba(0,0,0,.18)}
+  button:active{transform:translateY(4px);box-shadow:0 2px 0 #1f7442}
+  button.blue{background:#2f8fe0;box-shadow:0 6px 0 #1d64a3,0 10px 20px rgba(0,0,0,.18)}
+  button.pink{background:#f0568f;box-shadow:0 6px 0 #b83568,0 10px 20px rgba(0,0,0,.18)}
+  .legend span{font-weight:800;padding:6px 16px;border-radius:999px;color:#fff;font-size:clamp(15px,1.7vw,20px)}
   .hidden{display:none!important}
-  .legend span{font-family:Kanit,Tahoma,sans-serif;font-weight:800;padding:6px 14px;border:4px solid #000;color:#fff;font-size:clamp(15px,1.7vw,20px)}
-  #status{font-size:16px;color:#a9a2d6;font-family:"Kanit",Tahoma,sans-serif}
+  #status{font-size:16px;color:#6a7883}
 </style>
 </head>
 <body>
 <video id="video" playsinline muted></video>
 <canvas id="c"></canvas>
-<canvas id="u"></canvas>
 
 <div id="start" class="card">
   <h1>มอนสเตอร์หิวขยะ!</h1>
-  <p><b>โบกมือ</b> ไปแตะขยะเพื่อหยิบ แล้วป้อนให้มอนสเตอร์ให้ถูกตัว<br>ป้อนผิด มอนสเตอร์จะคายออกมา!</p>
+  <p>เมืองของเราเต็มไปด้วยขยะ! ใช้<b>ปลายนิ้วชี้จิ้มขยะ</b> แล้ว<b>ลากไปป้อน</b>มอนสเตอร์ให้ถูกตัว<br>ยิ่งป้อนถูก เมืองยิ่งสะอาดขึ้น!</p>
   <div class="row legend">
-    <span style="background:#3fbf5a">ขยะเปียก</span><span style="background:#ffcf33;color:#000">รีไซเคิล</span>
-    <span style="background:#3f8fff">ขยะทั่วไป</span><span style="background:#ff4f4f">ขยะอันตราย</span>
+    <span style="background:#3fb35f">ขยะเปียก</span><span style="background:#f2b705">รีไซเคิล</span>
+    <span style="background:#2f8fe0">ขยะทั่วไป</span><span style="background:#e5484d">ขยะอันตราย</span>
   </div>
   <div class="row">
     <button class="blue" onclick="startGame('solo')">เล่นคนเดียว</button>
@@ -61,18 +51,17 @@
 
 <script type="module">
 const canvas = document.getElementById('c'), ctx = canvas.getContext('2d');
-const ucanvas = document.getElementById('u'), U = ucanvas.getContext('2d');
-const PX = 4, PXU = 2;
-const INK = '#000', PAPER = '#1a1340', THAI = 'Kanit,Tahoma,sans-serif';
-const P_COLORS = ['#ff5fa2', '#3fb6ff'], P_NAMES = ['ฝั่งซ้าย', 'ฝั่งขวา'];
-const GAME_TIME = 60;
-let W, H;
+const video = document.getElementById('video'), statusEl = document.getElementById('status');
+const FONT = 'Kanit,Tahoma,sans-serif';
+const P_COLORS = ['#f0568f', '#2f8fe0'], P_NAMES = ['ฝั่งซ้าย', 'ฝั่งขวา'];
+const GAME_TIME = 60, CLEAN_TARGET = 15;
+let W, H, DPR = 1;
 
 const MONSTERS = {
-  green:  {name:'ขยะเปียก',   body:'#3fbf5a', dark:'#23803a', lid:'#1d6b30'},
-  yellow: {name:'รีไซเคิล',   body:'#ffcf33', dark:'#c99a10', lid:'#a87d00'},
-  blue:   {name:'ขยะทั่วไป', body:'#3f8fff', dark:'#2560c0', lid:'#1c4a96'},
-  red:    {name:'ขยะอันตราย', body:'#ff4f4f', dark:'#c02e2e', lid:'#962020'},
+  green:  {name:'ขยะเปียก',   body:'#3fb35f', dark:'#2a8a45', lid:'#23733a'},
+  yellow: {name:'รีไซเคิล',   body:'#f2b705', dark:'#c99700', lid:'#a87d00'},
+  blue:   {name:'ขยะทั่วไป', body:'#2f8fe0', dark:'#2470b5', lid:'#1c5a92'},
+  red:    {name:'ขยะอันตราย', body:'#e5484d', dark:'#bd3237', lid:'#962528'},
 };
 const ITEMS = [
   {e:'🍌',n:'เปลือกกล้วย',b:'green',f:'เศษอาหารหมักเป็นปุ๋ยให้ต้นไม้ได้'},
@@ -81,95 +70,80 @@ const ITEMS = [
   {e:'🍂',n:'ใบไม้แห้ง',b:'green',f:'ใบไม้แห้งทำปุ๋ยหมักได้ดีมาก'},
   {e:'🐟',n:'ก้างปลา',b:'green',f:'เศษอาหารควรแยกออก ไม่ให้ปนกับขยะอื่น'},
   {e:'🍉',n:'เปลือกแตงโม',b:'green',f:'เปลือกผลไม้เป็นอาหารของไส้เดือนได้'},
+  {e:'🍚',n:'ข้าวเหลือ',b:'green',f:'กินข้าวให้หมดจาน ช่วยลดขยะเปียกได้'},
+  {e:'🥕',n:'เศษผัก',b:'green',f:'เศษผักทำปุ๋ยหมักหรือน้ำหมักชีวภาพได้'},
+  {e:'☕',n:'กากกาแฟ',b:'green',f:'กากกาแฟโรยดินช่วยบำรุงต้นไม้ได้'},
+  {e:'🍗',n:'กระดูกไก่',b:'green',f:'เศษอาหารทุกชนิดเป็นขยะเปียก'},
   {e:'🧴',n:'ขวดพลาสติก',b:'yellow',f:'ขวดพลาสติกรีไซเคิลเป็นเสื้อได้นะ'},
   {e:'🥫',n:'กระป๋อง',b:'yellow',f:'กระป๋องอะลูมิเนียมรีไซเคิลได้แทบไม่จำกัดครั้ง'},
   {e:'📰',n:'หนังสือพิมพ์',b:'yellow',f:'รีไซเคิลกระดาษช่วยลดการตัดต้นไม้'},
   {e:'📦',n:'กล่องกระดาษ',b:'yellow',f:'กล่องกระดาษนำกลับมาทำกล่องใหม่ได้'},
   {e:'🍾',n:'ขวดแก้ว',b:'yellow',f:'แก้วหลอมแล้วทำขวดใหม่ได้เรื่อย ๆ'},
+  {e:'🥛',n:'กล่องนม',b:'yellow',f:'กล่องนมรีไซเคิลทำเป็นแผ่นหลังคาได้'},
+  {e:'📄',n:'กระดาษ A4',b:'yellow',f:'ใช้กระดาษสองหน้าก่อนทิ้ง ช่วยประหยัดต้นไม้'},
+  {e:'🥤',n:'แก้วพลาสติก',b:'yellow',f:'ล้างแก้วก่อนทิ้ง จะรีไซเคิลได้ง่ายขึ้น'},
   {e:'🍬',n:'ซองขนม',b:'blue',f:'ซองขนมมีหลายชั้นซ้อนกัน เลยรีไซเคิลยาก'},
   {e:'🧻',n:'ทิชชู่ใช้แล้ว',b:'blue',f:'ทิชชู่ใช้แล้วสกปรก รีไซเคิลไม่ได้'},
   {e:'🍱',n:'กล่องโฟม',b:'blue',f:'โฟมใช้เวลาย่อยสลายนานหลายร้อยปี'},
   {e:'🩹',n:'พลาสเตอร์ยา',b:'blue',f:'ของใช้แล้วที่ปนเปื้อน ทิ้งถังทั่วไป'},
+  {e:'🥢',n:'ตะเกียบใช้แล้ว',b:'blue',f:'ของใช้แล้วที่เปื้อนอาหาร ทิ้งถังทั่วไป'},
+  {e:'😷',n:'หน้ากากอนามัย',b:'blue',f:'หน้ากากใช้แล้ว พับใส่ถุงก่อนทิ้งนะ'},
+  {e:'🥡',n:'กล่องข้าวเปื้อน',b:'blue',f:'กล่องที่เปื้อนอาหารมาก รีไซเคิลไม่ได้'},
   {e:'🔋',n:'ถ่านไฟฉาย',b:'red',f:'ถ่านมีสารเคมีอันตรายต่อดินและน้ำ'},
   {e:'💡',n:'หลอดไฟ',b:'red',f:'หลอดไฟบางชนิดมีสารปรอทอยู่ข้างใน'},
   {e:'💊',n:'ยาหมดอายุ',b:'red',f:'ยาหมดอายุห้ามทิ้งรวมกับขยะทั่วไป'},
   {e:'📱',n:'มือถือเก่า',b:'red',f:'ขยะอิเล็กทรอนิกส์มีโลหะหนัก ต้องแยกทิ้ง'},
-  {e:'🌡️',n:'ปรอทวัดไข้',b:'red',f:'ปรอทเป็นพิษ ถ้าแตกห้ามจับด้วยมือ'},
-  // เพิ่ม
-  {e:'🍚',n:'ข้าวเหลือ',b:'green',f:'กินข้าวให้หมดจาน ช่วยลดขยะเปียกได้'},
-  {e:'🥕',n:'เศษผัก',b:'green',f:'เศษผักทำปุ๋ยหมักหรือน้ำหมักชีวภาพได้'},
-  {e:'☕',n:'กากกาแฟ',b:'green',f:'กากกาแฟโรยดินช่วยบำรุงต้นไม้ได้'},
-  {e:'🥥',n:'กะลามะพร้าว',b:'green',f:'กะลามะพร้าวย่อยสลายได้ตามธรรมชาติ'},
-  {e:'🍗',n:'กระดูกไก่',b:'green',f:'เศษอาหารทุกชนิดเป็นขยะเปียก'},
-  {e:'🥛',n:'กล่องนม',b:'yellow',f:'กล่องนมรีไซเคิลทำเป็นแผ่นหลังคาได้'},
-  {e:'📄',n:'กระดาษ A4',b:'yellow',f:'กระดาษใช้สองหน้าก่อนทิ้ง ช่วยประหยัดต้นไม้'},
-  {e:'🥤',n:'แก้วพลาสติก',b:'yellow',f:'ล้างแก้วก่อนทิ้ง จะรีไซเคิลได้ง่ายขึ้น'},
-  {e:'🔩',n:'เศษเหล็ก',b:'yellow',f:'เหล็กหลอมแล้วนำมาใช้ใหม่ได้'},
-  {e:'🍥',n:'ซองบะหมี่',b:'blue',f:'ซองบะหมี่เปื้อนน้ำมัน รีไซเคิลยาก'},
-  {e:'🥢',n:'ตะเกียบใช้แล้ว',b:'blue',f:'ของใช้แล้วที่เปื้อนอาหาร ทิ้งถังทั่วไป'},
-  {e:'😷',n:'หน้ากากอนามัย',b:'blue',f:'หน้ากากใช้แล้ว พับใส่ถุงก่อนทิ้งนะ'},
-  {e:'🧸',n:'ตุ๊กตาขาด',b:'blue',f:'ของเล่นที่ยังดีอยู่ บริจาคต่อได้นะ'},
-  {e:'🥡',n:'กล่องข้าวเปื้อน',b:'blue',f:'กล่องที่เปื้อนอาหารมาก รีไซเคิลไม่ได้'},
   {e:'🧯',n:'กระป๋องสเปรย์',b:'red',f:'กระป๋องสเปรย์มีแรงดัน ห้ามเผาเด็ดขาด'},
-  {e:'🎨',n:'กระป๋องสี',b:'red',f:'สีมีสารเคมี ต้องแยกทิ้งเป็นขยะอันตราย'},
   {e:'🧪',n:'น้ำยาเคมี',b:'red',f:'น้ำยาเคมีห้ามเทลงท่อ เป็นอันตรายต่อสัตว์น้ำ'},
   {e:'🔌',n:'สายชาร์จเสีย',b:'red',f:'เครื่องใช้ไฟฟ้าเสียเป็นขยะอันตราย'},
 ];
+const KEYS = ['green','yellow','blue','red'];
 
-let mode = 'solo', level = 1, state = 'menu', players = [], countdown = 0, lastT = 0, playT = 0, lastBeep = 4;
-let particles = [], stars = [], banner = null, keys = [];
-for (let i=0;i<90;i++) stars.push({x:Math.random(), y:Math.random(), s:Math.random()*2+0.5, p:Math.random()*6});
+let mode = 'solo', state = 'menu', players = [], countdown = 0, lastT = 0, playT = 0, lastBeep = 4;
+let particles = [], banner = null, clean = 0, cleanShow = 0;
 
 function resize(){
+  DPR = Math.min(2, devicePixelRatio || 1);
   W = innerWidth; H = innerHeight;
-  canvas.width = Math.ceil(W/PX); canvas.height = Math.ceil(H/PX);
-  ucanvas.width = Math.ceil(W/PXU); ucanvas.height = Math.ceil(H/PXU);
-  ctx.setTransform(1/PX,0,0,1/PX,0,0); U.setTransform(1/PXU,0,0,1/PXU,0,0);
-  ctx.imageSmoothingEnabled = false; U.imageSmoothingEnabled = false;
+  canvas.width = W*DPR; canvas.height = H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
   players.forEach(layoutPlayer);
+  buildCity();
 }
 addEventListener('resize', resize);
 
-// ---------- sound ----------
+// ---------- เสียง ----------
 let actx = null;
 function audio(){ if (!actx) try { actx = new (window.AudioContext||window.webkitAudioContext)(); } catch {} return actx; }
-function tone(f, d=0.15, type='square', vol=0.1, delay=0, f2=null){
+function tone(f, d=0.15, type='sine', vol=0.12, delay=0, f2=null){
   const a = audio(); if (!a) return;
   const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
   o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t+d);
-  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + d);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t+0.01); g.gain.exponentialRampToValueAtTime(0.001, t + d);
   o.connect(g).connect(a.destination); o.start(t); o.stop(t + d + 0.05);
 }
 const sfx = {
-  grab:  ()=> tone(440, 0.07, 'triangle', 0.12),
-  chomp: ()=>{ for (let i=0;i<3;i++) tone(180-i*20, 0.07, 'square', 0.12, i*0.11); tone(880,0.12,'square',0.08,0.36); tone(1320,0.18,'square',0.08,0.45); },
-  yuck:  ()=> tone(400, 0.45, 'sawtooth', 0.09, 0, 90),
-  combo: n => [660,880,1100,1320].slice(0, Math.min(4, n)).forEach((f,i)=>tone(f,0.1,'square',0.08,0.5+i*0.07)),
-  beep:  ()=> tone(520, 0.15, 'square', 0.1),
-  go:    ()=> tone(880, 0.35, 'square', 0.12),
-  win:   ()=> [523,659,784,1046,1318].forEach((f,i)=>tone(f,0.25,'square',0.1,i*0.12)),
+  bump:  v => tone(220 + Math.min(v,1)*260, 0.08, 'triangle', 0.08 + Math.min(v,1)*0.08),
+  chomp: ()=>{ for (let i=0;i<3;i++) tone(200-i*25, 0.08, 'triangle', 0.16, i*0.11); tone(784,0.15,'sine',0.12,0.36); tone(1046,0.22,'sine',0.12,0.46); },
+  yuck:  ()=> tone(380, 0.45, 'sawtooth', 0.07, 0, 90),
+  combo: n => [659,784,988,1175].slice(0, Math.min(4, n)).forEach((f,i)=>tone(f,0.12,'sine',0.1,0.55+i*0.07)),
+  beep:  ()=> tone(523, 0.15, 'sine', 0.15),
+  go:    ()=> tone(880, 0.35, 'sine', 0.18),
+  win:   ()=> [523,659,784,1046,1318].forEach((f,i)=>tone(f,0.3,'triangle',0.14,i*0.13)),
 };
 
-// ---------- menu ----------
-window.setLevel = lv => {
-  level = lv;
-  document.getElementById('lv1').classList.toggle('on', lv===1);
-  document.getElementById('lv2').classList.toggle('on', lv===2);
-};
+// ---------- เมนู ----------
 window.showStart = ()=>{
-  state = 'menu'; players = [];
+  state = 'menu'; players = []; clean = 0;
   document.getElementById('end').classList.add('hidden');
   document.getElementById('start').classList.remove('hidden');
 };
 window.startGame = m => {
   audio(); mode = m;
-  keys = ['green','yellow','blue','red'];
-  const pool = ITEMS.filter(i => keys.includes(i.b));
-  // สุ่มแบบวนครบทุกชิ้นก่อนซ้ำ และสลับประเภทให้ทั่วถึง
-  const order = []; while (order.length < 120) order.push(...[...pool].sort(()=>Math.random()-0.5));
+  const order = []; while (order.length < 150) order.push(...[...ITEMS].sort(()=>Math.random()-0.5));
   players = mode==='solo' ? [makePlayer(0,0,1,order)] : [makePlayer(0,0,0.5,order), makePlayer(1,0.5,1,order)];
   players.forEach(layoutPlayer);
-  particles = []; banner = null; state = 'countdown'; countdown = 3.999; lastBeep = 4;
+  particles = []; banner = null; clean = 0; state = 'countdown'; countdown = 3.999; lastBeep = 4;
   document.getElementById('start').classList.add('hidden');
   document.getElementById('end').classList.add('hidden');
 };
@@ -178,109 +152,121 @@ addEventListener('keydown', e=>{
   if (e.code === 'Escape') showStart();
 });
 
-// ---------- players ----------
+// ---------- ผู้เล่น ----------
 function makePlayer(idx, f0, f1, order){
-  return {idx, f0, f1, order, k:0, current:null, held:false, score:0, wrong:0, combo:0, best:0,
-          hand:{x:-999,y:-999,seen:false}, pts:null, lost:0, msg:null, mons:[], R:40};
+  return {idx, f0, f1, order, k:0, item:null, score:0, wrong:0, combo:0, best:0, msg:null, mons:[], R:40,
+          hand:null, mouse:null};
 }
 function layoutPlayer(p){
   p.x0 = p.f0*W; p.x1 = p.f1*W;
-  const w = p.x1-p.x0, n = keys.length, slot = w/n;
-  const mw = Math.min(slot*0.72, 240), mh = Math.min(H*0.3, mw*1.15);
-  p.R = Math.min(w*0.07, H*0.075);
+  const w = p.x1-p.x0, slot = w/KEYS.length;
+  const mw = Math.min(slot*0.78, 250), mh = Math.min(H*0.3, mw*1.12);
+  p.R = Math.min(w*0.045, H*0.06);
   const old = p.mons;
-  p.mons = keys.map((k,i)=>({k, ...MONSTERS[k], x: p.x0 + slot*(i+0.5) - mw/2, y: H - mh - 22, w: mw, h: mh,
+  p.mons = KEYS.map((k,i)=>({k, ...MONSTERS[k], x: p.x0 + slot*(i+0.5) - mw/2, y: H - mh - 14, w: mw, h: mh,
     open: 0, chomp: 0, happy: 0, yuck: 0, shake: 0, ph: Math.random()*6, ...(old[i] ? {open:old[i].open} : {})}));
 }
 function nextItem(p){
   const it = p.order[p.k++ % p.order.length], w = p.x1-p.x0;
-  p.current = {...it, x: p.x0 + w*(0.25+Math.random()*0.5), y: -60, wob: 0, bounce: 0, spitVX: 0, spitVY: 0};
+  p.item = {...it, x: p.x0 + w*(0.2+Math.random()*0.6), y: -p.R, vx: 0, vy: 0, rot: 0, spit: 0, held: false, wob: 0};
+}
+
+// ---------- ฟิสิกส์ขยะ ----------
+const BONES=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+const PALM = [[0,9],[0,13],[1,5],[2,5],[5,13],[9,17],[0,5]]; // เส้นเสริมให้ฝ่ามือทึบ ขยะไม่ลอดง่าย
+const COLLIDE = BONES.concat(PALM);
+function tip(p){ // ปลายนิ้วชี้ (จุดที่ 8) หรือเมาส์
+  if (p.hand) return p.hand.pts[8];
+  if (p.mouse) return p.mouse;
+  return null;
 }
 function updatePlayer(p, dt){
   for (const m of p.mons){ m.chomp = Math.max(0,m.chomp-dt); m.happy = Math.max(0,m.happy-dt); m.yuck = Math.max(0,m.yuck-dt); m.shake = Math.max(0,m.shake-dt*2); }
-  const c = p.current; if (!c) return;
-  const h = p.hand;
-  if (c.bounce > 0){ // ถูกคายออกมา
-    c.bounce -= dt; c.x += c.spitVX*dt; c.y += c.spitVY*dt; c.spitVY += 900*dt;
-    c.x = Math.max(p.x0+p.R, Math.min(p.x1-p.R, c.x));
-    if (c.bounce <= 0) c.y = Math.min(c.y, H*0.35);
-  } else if (!h.seen){ p.lost += dt; if (p.held && p.lost > 0.6) p.held = false; }
+  const it = p.item; if (!it) return;
+  const R = p.R, f = tip(p);
+  if (it.spit > 0){ // ถูกคายออกมา
+    it.spit -= dt; it.vy += H*2.5*dt; it.x += it.vx*dt; it.y += it.vy*dt;
+    it.x = Math.max(p.x0+R, Math.min(p.x1-R, it.x));
+    if (it.spit <= 0) it.y = Math.min(it.y, H*0.35);
+  } else if (!f){ p.lost = (p.lost||0) + dt; if (it.held && p.lost > 0.6) it.held = false; }
   else {
     p.lost = 0;
-    if (!p.held && Math.hypot(c.x-h.x, c.y-h.y) < p.R*1.5){ p.held = true; sfx.grab(); }
-    if (p.held){
-      c.x += (h.x-c.x)*0.5; c.y += (h.y-c.y)*0.5;
-      c.x = Math.max(p.x0+p.R, Math.min(p.x1-p.R, c.x));
-      const m = p.mons.find(m => c.x > m.x-10 && c.x < m.x+m.w+10 && c.y > m.y+m.h*0.05);
-      if (m) feed(p, m);
+    if (!it.held && Math.hypot(it.x - f.x, it.y - f.y) < R*1.3){ it.held = true; sfx.bump(0.5); }
+    if (it.held){
+      it.x += (f.x - it.x)*0.6; it.y += (f.y - it.y)*0.6;
+      it.x = Math.max(p.x0+R, Math.min(p.x1-R, it.x));
+      const m = p.mons.find(m => it.x > m.x - 10 && it.x < m.x + m.w + 10 && it.y > m.y + m.h*0.05);
+      if (m){ feed(p, m); return; }
     }
   }
-  if (!p.held && c.bounce <= 0){
-    c.wob += dt*2;
-    const stopY = H*0.33;
-    if (c.y < stopY) c.y = Math.min(stopY, c.y + H*0.3*dt); else c.y = stopY + Math.sin(c.wob)*12;
+  if (!it.held && it.spit <= 0){ // ลอยลงมาแล้วรอให้จิ้ม
+    it.wob = (it.wob||0) + dt*2; const stopY = H*0.33;
+    if (it.y < stopY) it.y = Math.min(stopY, it.y + H*0.3*dt); else it.y = stopY + Math.sin(it.wob)*12;
   }
-  // ปากอ้าตามระยะขยะที่ถืออยู่
+  it.rot = it.held ? 0 : Math.sin((it.wob||0))*0.15;
   for (const m of p.mons){
-    const near = p.held ? Math.max(0, 1 - Math.hypot(c.x-(m.x+m.w/2), c.y-(m.y+m.h*0.45)) / (m.w*1.6)) : 0;
+    const near = it.held ? Math.max(0, 1 - Math.hypot(it.x-(m.x+m.w/2), it.y-(m.y+m.h*0.45)) / (m.w*1.6)) : 0;
     m.open += (near - m.open)*Math.min(1, dt*10);
   }
 }
 function feed(p, m){
-  const c = p.current; p.held = false;
-  if (m.k === c.b){
+  const it = p.item;
+  if (m.k === it.b){
     p.score++; p.combo++; p.best = Math.max(p.best, p.combo);
     m.chomp = 0.55; m.happy = 1.1; sfx.chomp();
     if (p.combo >= 3) sfx.combo(p.combo - 1);
-    crumbs(m.x+m.w/2, m.y+m.h*0.4, [m.body,'#fff','#ffcf33']);
-    p.msg = {ok:true, title: p.combo >= 3 ? `อร่อย! คอมโบ x${p.combo}` : `อร่อย! ${c.n} → ${m.name}`, text: c.f, t: mode==='solo'?3:1.6};
+    sparkle(m.x+m.w/2, m.y+m.h*0.3, [m.body,'#ffffff','#ffe066'], 26);
+    p.msg = {ok:true, title: p.combo >= 3 ? `อร่อย! คอมโบ x${p.combo}` : `อร่อย! ${it.n} → ${m.name}`, text: it.f, t: mode==='solo'?3:1.6};
+    clean = Math.min(1, players.reduce((s,q)=>s+q.score,0) / (CLEAN_TARGET*players.length));
     nextItem(p);
   } else {
     p.wrong++; p.combo = 0; m.yuck = 1; m.shake = 1; sfx.yuck();
-    p.msg = {ok:false, title:`แหวะ! ${c.n} ไม่ใช่${m.name}`, text: true ? `ต้องป้อนให้ตัว "${MONSTERS[c.b].name}" นะ` : '', t:2.4};
-    c.bounce = 0.7; c.spitVX = (Math.random()-0.5)*500; c.spitVY = -900;
+    p.msg = {ok:false, title:`แหวะ! ${it.n} ไม่ใช่${m.name}`, text:`ต้องป้อนให้ตัว "${MONSTERS[it.b].name}" นะ`, t:2.4};
+    it.held = false; it.y = m.y - p.R; it.vy = -H*1.3; it.vx = (Math.random()-0.5)*H*0.8; it.spit = 0.7;
   }
 }
-function crumbs(x, y, colors){
-  for (let i=0;i<26;i++){ const a=Math.random()*Math.PI*2, v=150+Math.random()*320;
-    particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-200,c:colors[i%colors.length],life:1}); }
+function sparkle(x, y, cols, n){
+  for (let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, v=120+Math.random()*320;
+    particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-200,c:cols[i%cols.length],life:1,r:4+Math.random()*6,g:800}); }
 }
 function confetti(x0, x1){
-  const cols = ['#ff5fa2','#3fb6ff','#ffcf33','#7be39a','#ffffff','#b48cff'];
-  for (let i=0;i<220;i++) particles.push({x:x0+Math.random()*(x1-x0), y:-20-Math.random()*H*0.5, vx:(Math.random()-0.5)*120, vy:100+Math.random()*200, c:cols[i%cols.length], life:3.5, slow:true});
+  const cols = ['#f0568f','#2f8fe0','#ffd23f','#3fb35f','#ffffff','#9b6cf0'];
+  for (let i=0;i<200;i++) particles.push({x:x0+Math.random()*(x1-x0), y:-20-Math.random()*H*0.5, vx:(Math.random()-0.5)*120, vy:100+Math.random()*200, c:cols[i%6], life:3.5, r:5+Math.random()*5, slow:true});
 }
 
-// ---------- end ----------
+// ---------- จบเกม ----------
 function endGame(){
   state = 'over'; sfx.win();
   if (mode === 'solo'){
     const p = players[0]; confetti(0, W);
-    const title = p.score >= 15 ? 'ฮีโร่รักษ์โลกระดับตำนาน!' : p.score >= 10 ? 'ฮีโร่รักษ์โลกระดับทอง!' : p.score >= 5 ? 'ฮีโร่รักษ์โลกระดับเงิน!' : 'ฮีโร่รักษ์โลกฝึกหัด!';
+    const title = p.score >= 15 ? 'เมืองสะอาดสดใสที่สุด!' : p.score >= 10 ? 'เมืองสะอาดขึ้นเยอะเลย!' : p.score >= 5 ? 'เมืองเริ่มสะอาดแล้ว!' : 'ช่วยกันอีกนิดนะ!';
     setTimeout(()=>{
-      pixelTitle(document.getElementById('endTitle'), title);
-      document.getElementById('endText').innerHTML = `ป้อนถูก <b>${p.score}</b> ชิ้น · ป้อนผิด ${p.wrong} ชิ้น · คอมโบสูงสุด x${p.best}<br><br><span style="font-size:.85em">กลับบ้านไปช่วยที่บ้านแยกขยะด้วยนะ มอนสเตอร์ฝากมา</span>`;
+      setTitle(title, '#2f9e5b');
+      document.getElementById('endText').innerHTML = `ป้อนถูก <b>${p.score}</b> ชิ้น · ป้อนผิด ${p.wrong} ชิ้น · คอมโบสูงสุด x${p.best}<br>ความสะอาดของเมือง <b>${Math.round(clean*100)}%</b><br><span style="font-size:.85em;color:#5a6b78">กลับบ้านไปช่วยที่บ้านแยกขยะด้วยนะ เมืองของเราจะได้สะอาดแบบนี้จริง ๆ</span>`;
       document.getElementById('end').classList.remove('hidden');
-    }, 1300);
+    }, 2200);
     return;
   }
   const [a, b] = players;
   const w = a.score > b.score ? a : b.score > a.score ? b : (a.wrong < b.wrong ? a : b.wrong < a.wrong ? b : null);
   if (w){ confetti(w.x0, w.x1); banner = {p: w}; } else confetti(0, W);
   setTimeout(()=>{
-    pixelTitle(document.getElementById('endTitle'), w ? `${P_NAMES[w.idx]}ชนะ!` : 'เสมอกัน! เก่งทั้งคู่', w ? P_COLORS[w.idx] : '#ffcf33');
+    setTitle(w ? `${P_NAMES[w.idx]}ชนะ!` : 'เสมอกัน! เก่งทั้งคู่', w ? P_COLORS[w.idx] : '#2f9e5b');
     const line = p => `<b style="color:${P_COLORS[p.idx]}">${P_NAMES[p.idx]}</b> ป้อนถูก ${p.score} ชิ้น · ผิด ${p.wrong} · คอมโบสูงสุด x${p.best}`;
-    document.getElementById('endText').innerHTML = `${line(a)}<br>${line(b)}`;
+    document.getElementById('endText').innerHTML = `${line(a)}<br>${line(b)}<br>ความสะอาดของเมือง <b>${Math.round(clean*100)}%</b>`;
     document.getElementById('end').classList.remove('hidden');
-  }, 2200);
+  }, 2600);
 }
+function setTitle(text, color){ const el = document.getElementById('endTitle'); el.textContent = text; el.style.color = color; }
 
-// ---------- hand tracking ----------
-let handOK = false, landmarker = null, lastVideoTime = -1;
+// ---------- จับมือ ----------
+let handOK = false, landmarker = null, lastVideoTime = -1, mouse = null;
 addEventListener('mousemove', e=>{
-  if (handOK || !players.length) return;
-  const p = players.find(p => e.clientX >= p.x0 && e.clientX < p.x1) || players[0];
-  players.forEach(q => { if (q !== p) q.hand.seen = false; });
-  p.hand.x = e.clientX; p.hand.y = e.clientY; p.hand.seen = true;
+  if (handOK) return;
+  const now = performance.now();
+  if (mouse){ const dt = Math.max(0.008, (now - mouse.t)/1000); mouse.v = {x:(e.clientX-mouse.x)/dt*0.7 + mouse.v.x*0.3, y:(e.clientY-mouse.y)/dt*0.7 + mouse.v.y*0.3}; }
+  else mouse = {v:{x:0,y:0}};
+  mouse.x = e.clientX; mouse.y = e.clientY; mouse.t = now;
 });
 async function initHands(){
   try{
@@ -299,251 +285,291 @@ async function initHands(){
     statusEl.textContent = 'เปิดกล้องหรือตัวจับมือไม่ได้ ตอนนี้เล่นด้วยเมาส์ได้ · ตรวจว่าอนุญาตกล้องและต่ออินเทอร์เน็ต';
   }
 }
-const video = document.getElementById('video'), statusEl = document.getElementById('status');
 const mapPt = p => ({x:(1-(0.5+(p.x-0.5)*1.4))*W, y:(0.5+(p.y-0.5)*1.4)*H});
-function trackHands(){
-  if (!handOK || video.readyState < 2 || video.currentTime === lastVideoTime) return;
-  lastVideoTime = video.currentTime;
-  const r = landmarker.detectForVideo(video, performance.now());
-  const found = (r.landmarks || []).map(L => ({pts: L.map(mapPt), c: mapPt({x:(L[0].x+L[9].x)/2, y:(L[0].y+L[9].y)/2})}));
+function trackHands(dt){
+  if (!handOK){
+    // เมาส์แทนมือ
+    players.forEach(p => { p.mouse = null; });
+    if (mouse && players.length){ const p = players.find(p => mouse.x >= p.x0 && mouse.x < p.x1) || players[0]; p.mouse = mouse; mouse.v.x *= 0.85; mouse.v.y *= 0.85; }
+    return;
+  }
+  if (video.readyState < 2 || video.currentTime === lastVideoTime) return;
+  const now = performance.now(); lastVideoTime = video.currentTime;
+  const r = landmarker.detectForVideo(video, now);
+  const found = (r.landmarks || []).map(L => { const pts = L.map(mapPt); return {pts, c: {x:(pts[0].x+pts[9].x)/2, y:(pts[0].y+pts[9].y)/2}}; });
   const assigned = players.map(()=>null);
   if (mode === 'solo'){ if (found[0]) assigned[0] = found[0]; }
   else for (const f of found){ const side = f.c.x < W/2 ? 0 : 1; if (!assigned[side]) assigned[side] = f; }
   players.forEach((p,i)=>{
     const f = assigned[i];
-    if (!f){ p.hand.seen = false; p.pts = null; return; }
-    p.pts = f.pts;
-    p.hand.x = p.hand.seen ? p.hand.x + (f.c.x-p.hand.x)*0.55 : f.c.x;
-    p.hand.y = p.hand.seen ? p.hand.y + (f.c.y-p.hand.y)*0.55 : f.c.y;
-    p.hand.seen = true;
+    if (!f){ p.hand = null; return; }
+    const prev = p.hand, fdt = prev ? Math.max(0.016, (now - prev.t)/1000) : 1;
+    // ทำให้นิ่งขึ้นนิดหน่อย และคำนวณความเร็วของทุกจุดบนมือ
+    const pts = f.pts.map((q,k) => prev ? {x: prev.pts[k].x + (q.x - prev.pts[k].x)*0.75, y: prev.pts[k].y + (q.y - prev.pts[k].y)*0.75} : q);
+    const vel = pts.map((q,k) => prev ? {x:(q.x - prev.pts[k].x)/fdt, y:(q.y - prev.pts[k].y)/fdt} : {x:0,y:0});
+    p.hand = {pts, vel, t: now};
   });
 }
 
-// ---------- drawing helpers ----------
-function sticker(x,y,w,h,fill,sh=6){
-  const ctx = U;
-  ctx.fillStyle='#000'; ctx.fillRect(x-4+sh,y-4+sh,w+8,h+8);
-  ctx.fillStyle='#000'; ctx.fillRect(x-8,y-8,w+16,h+16);
-  ctx.fillStyle='#fff'; ctx.fillRect(x-4,y-4,w+8,h+8);
-  ctx.fillStyle=fill; ctx.fillRect(x,y,w,h);
+// ---------- ฉากเมือง ----------
+let city = null;
+function buildCity(){
+  const rnd = (a,b)=>a+Math.random()*(b-a);
+  const bld = []; let x = -20;
+  while (x < W + 20){ const w = rnd(60, 130); bld.push({x, w, h: rnd(H*0.18, H*0.42), hue: Math.floor(rnd(0,6)), win: Math.random()}); x += w + rnd(4, 18); }
+  const trees = []; for (let i=0;i<Math.ceil(W/160);i++) trees.push({x: rnd(20, W-20), s: rnd(0.8, 1.3)});
+  const piles = []; for (let i=0;i<Math.ceil(W/90);i++) piles.push({x: rnd(0, W), s: rnd(0.7, 1.4), c: ['#8a7a5a','#6b6b6b','#9a6b4f','#5f7a6a'][i%4]});
+  const smog = []; for (let i=0;i<9;i++) smog.push({x: rnd(0, W), y: rnd(H*0.05, H*0.35), r: rnd(60, 140), sp: rnd(8, 22)});
+  const birds = []; for (let i=0;i<6;i++) birds.push({x: rnd(0, W), y: rnd(H*0.08, H*0.3), sp: rnd(30, 70), ph: rnd(0, 6)});
+  city = {bld, trees, piles, smog, birds, factory: W*0.82};
 }
-function label(t, x, y, size, fill='#fff'){
-  const ctx = U;
-  ctx.font = `800 ${size}px ${/^[0-9A-Za-z!?\sx/.]+$/.test(t) ? '"Press Start 2P",' : ''}${THAI}`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'miter';
-  ctx.lineWidth = Math.max(6, size*0.28); ctx.strokeStyle = INK; ctx.strokeText(t, x, y);
-  ctx.fillStyle = fill; ctx.fillText(t, x, y);
-}
-function drawBG(t){
-  if (handOK && video.videoWidth){
+const mix = (a, b, t) => { const pa = parseInt(a.slice(1),16), pb = parseInt(b.slice(1),16);
+  const r = (pa>>16)+(((pb>>16)-(pa>>16))*t), g = ((pa>>8)&255)+((((pb>>8)&255)-((pa>>8)&255))*t), bl = (pa&255)+(((pb&255)-(pa&255))*t);
+  return `rgb(${r|0},${g|0},${bl|0})`; };
+const DIRTY_B = ['#7d7d80','#6e6a66','#85807a','#727578','#7a7470','#696c70'], CLEAN_B = ['#ffb5a7','#a8d8ff','#ffe08a','#b8f0c8','#d7c4ff','#ffd0e8'];
+function drawCity(t){
+  const c = cleanShow, groundY = H*0.72;
+  const cam = handOK && video.videoWidth;
+  if (cam){
     const vw=video.videoWidth, vh=video.videoHeight, s=Math.max(W/vw,H/vh);
     ctx.save(); ctx.translate(W,0); ctx.scale(-1,1);
     ctx.drawImage(video,(W-vw*s)/2,(H-vh*s)/2,vw*s,vh*s); ctx.restore();
+    // หมอกควันมลพิษทับภาพกล้อง จางลงเมื่อเมืองสะอาด
+    ctx.fillStyle = `rgba(110,100,80,${0.42*(1-c)})`; ctx.fillRect(0,0,W,H);
+    if (c > 0.5){ ctx.fillStyle = `rgba(140,200,255,${0.15*(c-0.5)*2})`; ctx.fillRect(0,0,W,H*0.5); }
   } else {
-    ctx.fillStyle='#4fc3f7'; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#8fd96a'; ctx.fillRect(0,H*0.72,W,H*0.28);
-    ctx.fillStyle='#fff'; for (const s of stars.slice(0,8)){ const cx=((s.x*W + t*0.02*s.s) % (W+200))-100, cy=s.y*H*0.4; ctx.fillRect(cx,cy,80,24); ctx.fillRect(cx+16,cy-16,48,16); }
+    const g = ctx.createLinearGradient(0,0,0,groundY);
+    g.addColorStop(0, mix('#8c8578', '#4fb3f5', c)); g.addColorStop(1, mix('#b5aa94', '#c9ecff', c));
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,groundY);
   }
+  // พระอาทิตย์
+  if (c > 0.2){ ctx.globalAlpha = Math.min(1,(c-0.2)*1.6); ctx.fillStyle = '#ffd84d'; ctx.beginPath(); ctx.arc(W*0.12, H*0.15, H*0.07, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#ffd84d'; ctx.lineWidth = 6; for (let i=0;i<10;i++){ const a = i*Math.PI/5 + t/3000; ctx.beginPath(); ctx.moveTo(W*0.12+Math.cos(a)*H*0.09, H*0.15+Math.sin(a)*H*0.09); ctx.lineTo(W*0.12+Math.cos(a)*H*0.12, H*0.15+Math.sin(a)*H*0.12); ctx.stroke(); }
+    ctx.globalAlpha = 1; }
+  // รุ้งตอนสะอาดมาก
+  if (c > 0.85){ ctx.globalAlpha = (c-0.85)/0.15*0.7; const rc = ['#ff5a5a','#ffa94d','#ffe066','#69db7c','#4dabf7','#9775fa'];
+    rc.forEach((col,i)=>{ ctx.strokeStyle = col; ctx.lineWidth = H*0.02; ctx.beginPath(); ctx.arc(W*0.62, groundY, H*0.5 - i*H*0.02, Math.PI, Math.PI*2); ctx.stroke(); }); ctx.globalAlpha = 1; }
+  // ตึก
+  for (const b of city.bld){
+    const col = mix(DIRTY_B[b.hue], CLEAN_B[b.hue], c), y = groundY - b.h;
+    ctx.fillStyle = col; ctx.beginPath(); ctx.roundRect(b.x, y, b.w, b.h + 4, [10,10,0,0]); ctx.fill();
+    ctx.fillStyle = c > 0.5 ? 'rgba(255,255,255,.75)' : 'rgba(40,40,40,.35)';
+    for (let wy = y + 14; wy < groundY - 20; wy += 26) for (let wx = b.x + 10; wx < b.x + b.w - 16; wx += 22) ctx.fillRect(wx, wy, 11, 14);
+  }
+  // โรงงาน + ควัน
+  const fx = city.factory;
+  ctx.fillStyle = mix('#5b5552', '#9fb5a0', c); ctx.beginPath(); ctx.roundRect(fx - 70, groundY - H*0.16, 140, H*0.16+4, 8); ctx.fill();
+  ctx.fillRect(fx + 30, groundY - H*0.3, 26, H*0.15);
+  if (c < 0.95){ for (let i=0;i<6;i++){ const k = ((t/1800 + i/6) % 1), r = 18 + k*50;
+    ctx.fillStyle = `rgba(70,65,60,${(1-k)*0.55*(1-c)})`; ctx.beginPath(); ctx.arc(fx + 43 + Math.sin(k*6+i)*20 + k*60, groundY - H*0.3 - k*H*0.25, r, 0, Math.PI*2); ctx.fill(); } }
+  if (c > 0.6){ ctx.fillStyle = '#69db7c'; ctx.beginPath(); ctx.arc(fx + 43, groundY - H*0.32, 14, 0, Math.PI*2); ctx.fill(); } // ใบไม้แทนควัน
+  // ถนน/พื้น
+  ctx.fillStyle = mix('#5c564c', '#7cc76a', c); ctx.fillRect(0, groundY, W, H - groundY);
+  ctx.fillStyle = mix('#48433b', '#5fae54', c); ctx.fillRect(0, groundY, W, 10);
+  // ต้นไม้
+  for (const tr of city.trees){
+    const s = tr.s*H*0.05, ty = groundY;
+    ctx.fillStyle = '#7a5230'; ctx.fillRect(tr.x - s*0.15, ty - s*1.6, s*0.3, s*1.6);
+    ctx.fillStyle = mix('#8a7a4a', '#3fb35f', c); ctx.beginPath(); ctx.arc(tr.x, ty - s*1.9, s*(0.6 + c*0.4), 0, Math.PI*2); ctx.fill();
+    if (c > 0.7){ ctx.fillStyle = '#ff8ec3'; ctx.beginPath(); ctx.arc(tr.x + s*0.3, ty - s*2.1, s*0.12, 0, Math.PI*2); ctx.fill(); }
+  }
+  // กองขยะบนพื้น หายไปเมื่อเมืองสะอาด
+  const showPiles = Math.round(city.piles.length*(1-c));
+  city.piles.slice(0, showPiles).forEach(pl => {
+    const s = pl.s*18, y = groundY + 18;
+    ctx.fillStyle = pl.c; ctx.beginPath(); ctx.ellipse(pl.x, y, s*1.6, s*0.9, 0, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#c9c1a8'; ctx.fillRect(pl.x - s*0.6, y - s*0.9, s*0.5, s*0.4); ctx.fillStyle = '#3a6ea5'; ctx.fillRect(pl.x + s*0.2, y - s*0.7, s*0.35, s*0.5);
+  });
+  // หมอกควัน
+  for (const sm of city.smog){ sm.x = (sm.x + sm.sp*0.016) % (W + 300);
+    ctx.fillStyle = `rgba(90,85,75,${0.35*(1-c)})`; ctx.beginPath(); ctx.ellipse(sm.x - 150, sm.y, sm.r*1.6, sm.r*0.6, 0, 0, Math.PI*2); ctx.fill(); }
+  // นกกลับมา
+  if (c > 0.4){ ctx.strokeStyle = `rgba(40,40,60,${Math.min(1,(c-0.4)*2)})`; ctx.lineWidth = 3;
+    for (const bd of city.birds){ bd.x = (bd.x + bd.sp*0.016) % (W + 60); const f = Math.sin(t/120 + bd.ph)*6;
+      ctx.beginPath(); ctx.moveTo(bd.x - 12, bd.y - f); ctx.quadraticCurveTo(bd.x - 6, bd.y - 6, bd.x, bd.y); ctx.quadraticCurveTo(bd.x + 6, bd.y - 6, bd.x + 12, bd.y - f); ctx.stroke(); } }
 }
 
-// ---------- monster ----------
+// ---------- มอนสเตอร์ (การ์ตูน) ----------
 function drawMonster(m, p, t){
-  const bob = Math.round(Math.sin(t/400 + m.ph)*1.5)*4;
-  const sx = m.shake > 0 ? Math.round(Math.sin(t/30)*3)*4*m.shake : 0;
+  const bob = Math.sin(t/400 + m.ph)*5, sx = m.shake > 0 ? Math.sin(t/30)*10*m.shake : 0;
   const x = m.x + sx, y = m.y + bob, w = m.w, h = m.h;
-  const chompOpen = m.chomp > 0 ? Math.abs(Math.sin(m.chomp*17)) : 0;
-  const open = Math.max(m.open, chompOpen, m.yuck > 0.5 ? 0.8 : 0);
-  // ตัว (ถัง) ขอบดำ
-  ctx.fillStyle = INK; ctx.fillRect(x-8, y+h*0.14-8, w+16, h*0.86+16);
-  ctx.fillStyle = m.body; ctx.fillRect(x, y+h*0.14, w, h*0.86);
-  ctx.fillStyle = m.dark; ctx.fillRect(x, y+h*0.86, w, h*0.14);
-  ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(x+12, y+h*0.2, 12, h*0.5);
-  // ฝา = ผม ยกขึ้นตอนอ้าปาก
-  const lidY = y - open*h*0.12;
-  ctx.fillStyle = INK; ctx.fillRect(x-20, lidY-8, w+40, h*0.14+16);
-  ctx.fillStyle = m.lid; ctx.fillRect(x-12, lidY, w+24, h*0.14);
-  ctx.fillStyle = INK; ctx.fillRect(x+w/2-20, lidY-h*0.08, 40, h*0.08);
-  // ตา มองตามขยะ
-  const c = p.current, tx = c ? c.x : x+w/2, ty = c ? c.y : y;
-  const ex = w*0.2, ey = y + h*0.32, es = w*0.2;
+  const open = Math.max(m.open, m.chomp > 0 ? Math.abs(Math.sin(m.chomp*17)) : 0, m.yuck > 0.5 ? 0.8 : 0);
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.ellipse(x + w/2, m.y + h + 6, w*0.5, 10, 0, 0, Math.PI*2); ctx.fill();
+  // ตัวถัง
+  ctx.fillStyle = m.body; ctx.beginPath(); ctx.roundRect(x, y + h*0.14, w, h*0.86, [18,18,26,26]); ctx.fill();
+  ctx.fillStyle = m.dark; ctx.beginPath(); ctx.roundRect(x, y + h*0.82, w, h*0.18, [0,0,26,26]); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.28)'; ctx.beginPath(); ctx.roundRect(x + w*0.08, y + h*0.22, w*0.08, h*0.45, 8); ctx.fill();
+  // ฝา
+  const lidY = y - open*h*0.14;
+  ctx.save(); ctx.translate(x + w/2, lidY + h*0.07); ctx.rotate(-open*0.12);
+  ctx.fillStyle = m.lid; ctx.beginPath(); ctx.roundRect(-w*0.56, -h*0.07, w*1.12, h*0.15, 14); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(-w*0.12, -h*0.14, w*0.24, h*0.09, 8); ctx.fill();
+  ctx.restore();
+  // ตา
+  const it = p.item, tx = it ? it.x : x + w/2, ty = it ? it.y : y;
+  const ey = y + h*0.33, er = w*0.12;
   for (const side of [-1, 1]){
-    const cx = x + w/2 + side*ex;
-    if (m.happy > 0){ // ตายิ้ม ^ ^
-      ctx.fillStyle = INK;
-      ctx.fillRect(cx-es/2, ey, es*0.3, 8); ctx.fillRect(cx-es*0.2, ey-10, es*0.4, 8); ctx.fillRect(cx+es*0.2, ey, es*0.3, 8);
-    } else if (m.yuck > 0){ // ตา X
-      ctx.fillStyle = INK;
-      for (let k=-2;k<=2;k++){ ctx.fillRect(cx+k*es*0.12-4, ey+k*es*0.12-4, 8, 8); ctx.fillRect(cx+k*es*0.12-4, ey-k*es*0.12-4, 8, 8); }
-    } else {
-      ctx.fillStyle = INK; ctx.fillRect(cx-es/2-6, ey-es/2-6, es+12, es+12);
-      ctx.fillStyle = '#fff'; ctx.fillRect(cx-es/2, ey-es/2, es, es);
-      const a = Math.atan2(ty-ey, tx-cx), d = es*0.22;
-      ctx.fillStyle = INK; ctx.fillRect(cx + Math.cos(a)*d - es*0.2, ey + Math.sin(a)*d - es*0.2, es*0.4, es*0.4);
+    const cx = x + w/2 + side*w*0.2;
+    if (m.happy > 0){ ctx.strokeStyle = '#1d2733'; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(cx, ey + er*0.3, er*0.7, Math.PI*1.15, Math.PI*1.85); ctx.stroke(); }
+    else if (m.yuck > 0){ ctx.strokeStyle = '#1d2733'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(cx - er*0.6, ey - er*0.6); ctx.lineTo(cx + er*0.6, ey + er*0.6); ctx.moveTo(cx + er*0.6, ey - er*0.6); ctx.lineTo(cx - er*0.6, ey + er*0.6); ctx.stroke(); }
+    else {
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, ey, er, 0, Math.PI*2); ctx.fill();
+      const a = Math.atan2(ty - ey, tx - cx), d = er*0.4;
+      ctx.fillStyle = '#1d2733'; ctx.beginPath(); ctx.arc(cx + Math.cos(a)*d, ey + Math.sin(a)*d, er*0.5, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx + Math.cos(a)*d - er*0.15, ey + Math.sin(a)*d - er*0.18, er*0.15, 0, Math.PI*2); ctx.fill();
     }
   }
   // ปาก
-  const mw = w*0.62, mh = h*0.06 + open*h*0.26, mx = x + (w-mw)/2, my = y + h*0.5;
-  ctx.fillStyle = INK; ctx.fillRect(mx, my, mw, mh);
-  if (mh > h*0.12){ ctx.fillStyle = '#ff6b8a'; ctx.fillRect(mx+mw*0.25, my+mh-h*0.06, mw*0.5, h*0.05); }
+  const mw = w*0.6, mh = h*0.05 + open*h*0.26, mx = x + (w - mw)/2, my = y + h*0.5;
+  ctx.fillStyle = '#3a1520'; ctx.beginPath(); ctx.roundRect(mx, my, mw, mh, Math.min(mh/2, 22)); ctx.fill();
+  if (mh > h*0.12){ ctx.fillStyle = '#ff7a95'; ctx.beginPath(); ctx.ellipse(mx + mw/2, my + mh - h*0.04, mw*0.28, h*0.035, 0, 0, Math.PI*2); ctx.fill(); }
   ctx.fillStyle = '#fff';
-  const teeth = 4, tw = mw/(teeth*2);
-  for (let i=0;i<teeth;i++) ctx.fillRect(mx + tw*(i*2+0.5), my, tw, Math.min(12, mh*0.4));
-  if (m.yuck > 0){ // ลิ้นแลบ
-    ctx.fillStyle = '#ff6b8a'; ctx.fillRect(mx+mw*0.35, my+mh-6, mw*0.3, h*0.1);
-  }
+  for (let i=0;i<4;i++){ const tw = mw/9; ctx.beginPath(); ctx.roundRect(mx + tw*(i*2+0.8), my, tw, Math.min(14, mh*0.45), [0,0,4,4]); ctx.fill(); }
+  if (m.yuck > 0){ ctx.fillStyle = '#ff7a95'; ctx.beginPath(); ctx.roundRect(mx + mw*0.38, my + mh - 6, mw*0.24, h*0.12, 10); ctx.fill(); }
+  // แก้มแดงตอนดีใจ
+  if (m.happy > 0){ ctx.fillStyle = 'rgba(255,120,150,.6)'; ctx.beginPath(); ctx.arc(x + w*0.18, ey + er*1.4, er*0.45, 0, Math.PI*2); ctx.arc(x + w*0.82, ey + er*1.4, er*0.45, 0, Math.PI*2); ctx.fill(); }
 }
+function textOutlined(t, x, y, size, fill='#fff', stroke='rgba(20,30,40,.85)', weight=800){
+  ctx.font = `${weight} ${size}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.lineWidth = Math.max(4, size*0.2); ctx.strokeStyle = stroke; ctx.strokeText(t, x, y);
+  ctx.fillStyle = fill; ctx.fillText(t, x, y);
+}
+function pill(x, y, w, h, fill){ ctx.fillStyle = 'rgba(0,0,0,.18)'; ctx.beginPath(); ctx.roundRect(x, y + 4, w, h, h/2); ctx.fill(); ctx.fillStyle = fill; ctx.beginPath(); ctx.roundRect(x, y, w, h, h/2); ctx.fill(); }
 function drawMonsterLabels(p){
-  const fs = Math.max(15, Math.min((p.x1-p.x0)/keys.length*0.11, 26));
+  const fs = Math.max(14, Math.min((p.x1-p.x0)/KEYS.length*0.11, 24));
   for (const m of p.mons){
-    label(m.name, m.x+m.w/2, m.y+m.h*0.93, fs);
-    if (m.yuck > 0.2) bubble(m.x+m.w/2, m.y-m.h*0.22, 'แหวะ!', '#ff6b5e');
-    else if (m.happy > 0.2) bubble(m.x+m.w/2, m.y-m.h*0.22, 'งั่ม ๆ!', '#7be39a');
+    textOutlined(m.name, m.x + m.w/2, m.y + m.h*0.91, fs, '#fff', 'rgba(0,0,0,.35)');
+    if (m.yuck > 0.2) bubble(m.x + m.w/2, m.y - m.h*0.2, 'แหวะ!', '#e5484d');
+    else if (m.happy > 0.2) bubble(m.x + m.w/2, m.y - m.h*0.2, 'งั่ม ๆ!', '#2f9e5b');
   }
 }
 function bubble(x, y, t, col){
-  const ctx = U, f = Math.max(18, Math.min(W,H)*0.035);
-  ctx.font = `800 ${f}px ${THAI}`;
-  const w = ctx.measureText(t).width + 28;
-  sticker(x-w/2, y-f*0.8, w, f*1.6, '#fff', 4);
-  ctx.fillStyle = col; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t, x, y);
+  const f = Math.max(18, Math.min(W,H)*0.034);
+  ctx.font = `800 ${f}px ${FONT}`; const w = ctx.measureText(t).width + 34, h = f*1.6;
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.roundRect(x - w/2, y - h/2, w, h, h/2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x - 10, y + h/2 - 2); ctx.lineTo(x, y + h/2 + 14); ctx.lineTo(x + 10, y + h/2 - 2); ctx.fill();
+  ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, x, y + 1);
 }
 function drawItem(p){
-  const c = p.current; if (!c) return;
-  const r = p.R*(p.held?1.12:1), x = c.x, y = c.y;
-  if (!p.held && c.bounce <= 0){ ctx.strokeStyle='rgba(255,255,255,.7)'; ctx.lineWidth=8; ctx.setLineDash([12,10]);
-    ctx.strokeRect(x-r*1.25, y-r*1.25, r*2.5, r*2.5); ctx.setLineDash([]); }
-  ctx.fillStyle = INK; ctx.fillRect(x-r-8, y-r-8, r*2+16, r*2+16);
-  ctx.fillStyle = '#fff8e7'; ctx.fillRect(x-r, y-r, r*2, r*2);
-  ctx.font = `${r*1.45}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(c.e, x, y + r*0.08);
+  const it = p.item; if (!it) return;
+  const r = p.R;
+  ctx.save(); ctx.translate(it.x, it.y);
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.arc(3, 6, r, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = it.held ? '#ffd23f' : 'rgba(0,0,0,.12)'; ctx.lineWidth = 6; ctx.stroke();
+  ctx.rotate(it.rot);
+  ctx.font = `${r*1.25}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(it.e, 0, r*0.06);
+  ctx.restore();
+  textOutlined(it.n, it.x, it.y - r - Math.max(16, r*0.42), Math.max(16, r*0.42));
 }
-function drawItemLabel(p){
-  const c = p.current; if (!c) return;
-  const r = p.R*(p.held?1.12:1);
-  label(c.n, c.x, c.y - r - Math.max(18, r*0.45), Math.max(18, r*0.45));
-}
-const BONES=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
 function drawHand(p){
-  if (!p.hand.seen) return;
-  const col = mode==='duo' ? P_COLORS[p.idx] : '#8fe9ff';
-  if (p.pts){
-    ctx.lineCap='square';
-    ctx.strokeStyle=INK; ctx.lineWidth=12; for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(p.pts[a].x,p.pts[a].y); ctx.lineTo(p.pts[b].x,p.pts[b].y); ctx.stroke(); }
-    ctx.strokeStyle=col; ctx.lineWidth=6; for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(p.pts[a].x,p.pts[a].y); ctx.lineTo(p.pts[b].x,p.pts[b].y); ctx.stroke(); }
-    ctx.fillStyle='#fff'; for (const q of p.pts) ctx.fillRect(q.x-5,q.y-5,10,10);
+  const col = mode==='duo' ? P_COLORS[p.idx] : '#2f8fe0', f = tip(p);
+  if (p.hand){ // มือจาง ๆ ให้รู้ว่ากล้องเห็นมือ
+    const pts = p.hand.pts; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 5;
+    for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); }
   }
-  const r = Math.min(W,H)*0.045;
-  ctx.fillStyle=INK; ctx.fillRect(p.hand.x-r-6, p.hand.y-r-6, r*2+12, 14); ctx.fillRect(p.hand.x-r-6, p.hand.y+r-8, r*2+12, 14);
-  ctx.fillRect(p.hand.x-r-6, p.hand.y-r-6, 14, r*2+12); ctx.fillRect(p.hand.x+r-8, p.hand.y-r-6, 14, r*2+12);
-  ctx.fillStyle = p.held ? '#ffcf33' : col;
-  ctx.fillRect(p.hand.x-r-2, p.hand.y-r-2, r*2+4, 6); ctx.fillRect(p.hand.x-r-2, p.hand.y+r-4, r*2+4, 6);
-  ctx.fillRect(p.hand.x-r-2, p.hand.y-r-2, 6, r*2+4); ctx.fillRect(p.hand.x+r-4, p.hand.y-r-2, 6, r*2+4);
+  if (!f) return;
+  const held = p.item && p.item.held, r = Math.min(W,H)*0.028;
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.arc(f.x + 2, f.y + 4, r + 6, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(f.x, f.y, r + 6, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = held ? '#ffd23f' : col; ctx.beginPath(); ctx.arc(f.x, f.y, r, 0, Math.PI*2); ctx.fill();
+  if (!held){ const k = (performance.now()/700) % 1; ctx.strokeStyle = `rgba(255,255,255,${1-k})`; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(f.x, f.y, r + 8 + k*24, 0, Math.PI*2); ctx.stroke(); }
 }
 function drawHUD(p){
-  const ctx = U, f = Math.max(18, Math.min(W,H)*0.04);
-  ctx.font = `800 ${f}px ${THAI}`; ctx.textBaseline='middle'; ctx.textAlign='left';
-  const remain = Math.max(0, GAME_TIME - playT);
-  const txt = mode==='solo' ? `เวลา ${Math.ceil(remain)}    ป้อนแล้ว ${p.score}` : `${P_NAMES[p.idx]}   ${p.score}`;
-  const w = ctx.measureText(txt).width + 36, x = mode==='solo' ? 16 : (p.idx===0 ? p.x0+16 : p.x1-16-w-8);
-  sticker(x, 16, w, f*1.7, mode==='duo' ? P_COLORS[p.idx] : PAPER);
-  ctx.fillStyle = mode==='duo' ? '#000' : '#fff'; ctx.fillText(txt, x+18, 16+f*0.85);
-  if (p.combo >= 2){
-    ctx.font = `800 ${f*0.8}px ${THAI}`;
-    const ct = `คอมโบ x${p.combo}`, cw = ctx.measureText(ct).width + 24;
-    const cx = mode==='solo' ? 16 : (p.idx===0 ? p.x0+16 : p.x1-16-cw-8);
-    sticker(cx, 16+f*1.7+18, cw, f*1.2, '#ffcf33');
-    ctx.fillStyle = '#000'; ctx.fillText(ct, cx+12, 16+f*1.7+18+f*0.6);
-  }
+  const f = Math.max(17, Math.min(W,H)*0.034), remain = Math.max(0, GAME_TIME - playT);
+  ctx.font = `800 ${f}px ${FONT}`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  const txt = mode==='solo' ? `เวลา ${Math.ceil(remain)}   ป้อนถูก ${p.score}` : `${P_NAMES[p.idx]}  ${p.score}`;
+  const w = ctx.measureText(txt).width + 40, x = p.idx===1 ? p.x1 - 16 - w : p.x0 + 16;
+  pill(x, 16, w, f*1.8, mode==='duo' ? P_COLORS[p.idx] : 'rgba(30,45,60,.85)');
+  ctx.fillStyle = '#fff'; ctx.fillText(txt, x + 20, 16 + f*0.9);
+  if (p.combo >= 2){ ctx.font = `800 ${f*0.85}px ${FONT}`; const ct = `คอมโบ x${p.combo}`, cw = ctx.measureText(ct).width + 30, cx = p.idx===1 ? p.x1 - 16 - cw : p.x0 + 16;
+    pill(cx, 16 + f*2.1, cw, f*1.4, '#ffd23f'); ctx.fillStyle = '#3a2a00'; ctx.fillText(ct, cx + 15, 16 + f*2.8); }
+}
+function drawCleanBar(){
+  const f = Math.max(16, Math.min(W,H)*0.03), bw = Math.min(W*0.32, 380), x = (W - bw)/2, y = mode==='duo' ? 16 + f*2.3 : 18;
+  ctx.font = `800 ${f*0.85}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  pill(x - 10, y, bw + 20, f*2.2, 'rgba(255,255,255,.92)');
+  ctx.fillStyle = '#2b3a46'; ctx.fillText(state === 'over' ? 'เมืองสะอาดแล้ว! ขอบคุณที่ช่วยกันนะ' : `ความสะอาดของเมือง ${Math.round(cleanShow*100)}%`, W/2, y + f*0.6);
+  ctx.fillStyle = '#e3e7ea'; ctx.beginPath(); ctx.roundRect(x + 6, y + f*1.2, bw - 12, f*0.6, f*0.3); ctx.fill();
+  const g = ctx.createLinearGradient(x, 0, x + bw, 0); g.addColorStop(0, '#a08c5b'); g.addColorStop(1, '#3fb35f');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x + 6, y + f*1.2, Math.max(f*0.6, (bw - 12)*cleanShow), f*0.6, f*0.3); ctx.fill();
 }
 function drawDuoMiddle(){
-  const ctx = U;
-  ctx.strokeStyle='#fff'; ctx.lineWidth=4; ctx.setLineDash([14,12]);
-  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke(); ctx.setLineDash([]);
-  const f = Math.max(16, Math.min(W,H)*0.035), remain = Math.max(0, GAME_TIME - playT);
-  const w = f*3.2;
-  sticker(W/2-w/2, 14, w, f*1.8, remain < 10 ? '#ff8e7a' : PAPER);
-  label(`${Math.ceil(remain)}`, W/2, 14+f*0.9, f*0.9, remain < 10 ? '#fff' : '#ffcf33');
-  label('VS', W/2, H*0.45, Math.min(W,H)*0.07, '#ffcf33');
+  ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 4; ctx.setLineDash([14,12]);
+  ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke(); ctx.setLineDash([]);
+  const f = Math.max(16, Math.min(W,H)*0.034), remain = Math.max(0, GAME_TIME - playT);
+  pill(W/2 - f*1.6, 14, f*3.2, f*1.8, remain < 10 ? '#e5484d' : 'rgba(30,45,60,.85)');
+  textOutlined(`${Math.ceil(remain)}`, W/2, 14 + f*0.9, f, '#fff', 'transparent');
 }
 function drawMsg(p, dt){
   const m = p.msg; if (!m) return;
   m.t -= dt; if (m.t <= 0){ p.msg = null; return; }
-  const ctx = U, pw = p.x1-p.x0, solo = mode==='solo';
-  const f = Math.max(18, Math.min(pw, H*1.6)*(solo?0.03:0.036));
-  const two = solo && m.text;
-  const w = Math.min(pw*0.88, 950), h = two ? f*3.3 : f*2, x = p.x0 + (pw-w)/2, y = solo ? H*0.13 : H*0.13;
+  const pw = p.x1 - p.x0, solo = mode==='solo', f = Math.max(17, Math.min(pw, H*1.6)*(solo ? 0.028 : 0.034));
+  const two = solo && m.text, w = Math.min(pw*0.86, 900), h = two ? f*3.4 : f*2.1, x = p.x0 + (pw - w)/2, y = H*0.2;
   ctx.globalAlpha = Math.min(1, m.t*2);
-  sticker(x, y, w, h, PAPER);
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.font=`800 ${f}px ${THAI}`; ctx.fillStyle = m.ok ? '#7be39a' : '#ff6b5e';
-  ctx.fillText(m.title, x+w/2, y + (two ? f*1.05 : h/2), w-24);
-  if (two){ ctx.font=`${f*0.85}px ${THAI}`; ctx.fillStyle='#fff'; ctx.fillText(m.text, x+w/2, y+f*2.3, w-24); }
+  ctx.fillStyle = 'rgba(0,0,0,.15)'; ctx.beginPath(); ctx.roundRect(x, y + 5, w, h, 22); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.beginPath(); ctx.roundRect(x, y, w, h, 22); ctx.fill();
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `800 ${f}px ${FONT}`; ctx.fillStyle = m.ok ? '#2f9e5b' : '#e5484d';
+  ctx.fillText(m.title, x + w/2, y + (two ? f*1.05 : h/2), w - 30);
+  if (two){ ctx.font = `400 ${f*0.85}px ${FONT}`; ctx.fillStyle = '#3a4a56'; ctx.fillText(m.text, x + w/2, y + f*2.35, w - 30); }
   ctx.globalAlpha = 1;
 }
 function drawParticles(dt){
   for (const p of particles){
-    if (p.slow){ p.vx += (Math.random()-0.5)*40*dt; p.vy = Math.min(p.vy + 40*dt, 260); } else p.vy += 900*dt;
-    p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt*(p.slow?0.6:1.3);
+    if (p.slow){ p.vx += (Math.random()-0.5)*40*dt; p.vy = Math.min(p.vy + 40*dt, 260); } else p.vy += (p.g||800)*dt;
+    p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt*(p.slow ? 0.6 : 1.3);
     ctx.globalAlpha = Math.max(0, Math.min(1, p.life)); ctx.fillStyle = p.c;
-    const z = p.slow ? 12 : 12; ctx.fillRect(Math.round(p.x/4)*4, Math.round(p.y/4)*4, z, z);
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
   }
-  ctx.globalAlpha = 1; particles = particles.filter(p => p.life > 0 && p.y < H+40);
+  ctx.globalAlpha = 1; particles = particles.filter(p => p.life > 0 && p.y < H + 40);
 }
 function drawCountdown(dt){
   countdown -= dt;
   const n = Math.ceil(countdown);
   if (n !== lastBeep && n >= 1){ sfx.beep(); lastBeep = n; }
-  if (countdown <= 0){
-    sfx.go(); state = 'play'; playT = 0; players.forEach(nextItem); banner = {text:'ไป!', t:0.8};
-    return;
-  }
+  if (countdown <= 0){ sfx.go(); state = 'play'; playT = 0; players.forEach(nextItem); banner = {text:'ไป!', t:0.8}; return; }
   const frac = countdown - Math.floor(countdown);
-  label(String(n), W/2, H*0.36, Math.min(W,H)*(0.2 + 0.07*frac), '#ffcf33');
-  label(mode==='duo' ? 'ยืนคนละฝั่ง แล้วยกมือขึ้น!' : 'มอนสเตอร์หิวแล้ว ยกมือขึ้นเลย!', W/2, H*0.55, Math.min(W,H)*0.05);
+  textOutlined(String(n), W/2, H*0.38, Math.min(W,H)*(0.2 + 0.06*frac), '#ffd23f');
+  textOutlined(mode==='duo' ? 'ยืนคนละฝั่ง แล้วยกมือขึ้น!' : 'ชูนิ้วชี้ขึ้น เตรียมจิ้มขยะ!', W/2, H*0.56, Math.min(W,H)*0.05);
 }
 function drawBanner(dt){
   if (!banner) return;
   if (banner.p){ const p = banner.p, s = 1 + Math.sin(performance.now()/180)*0.06;
-    label('ชนะ!', (p.x0+p.x1)/2, H*0.36, Math.min(W,H)*0.16*s, P_COLORS[p.idx]); return; }
+    textOutlined('ชนะ!', (p.x0+p.x1)/2, H*0.4, Math.min(W,H)*0.15*s, P_COLORS[p.idx]); return; }
   banner.t -= dt; if (banner.t <= 0){ banner = null; return; }
-  label(banner.text, W/2, H*0.38, Math.min(W,H)*0.22*(1+(0.8-banner.t)*0.4), '#7be39a');
+  textOutlined(banner.text, W/2, H*0.4, Math.min(W,H)*0.2*(1+(0.8-banner.t)*0.4), '#3fb35f');
 }
 
 function loop(t){
   const dt = Math.min(0.05, (t-lastT)/1000 || 0); lastT = t;
-  trackHands(); U.clearRect(0,0,W,H); drawBG(t);
+  trackHands(dt);
+  // ตอนจบเกม เมืองค่อย ๆ สะอาดเต็มที่เพื่อโชว์ผลงาน
+  const targetClean = state === 'over' ? 1 : clean;
+  cleanShow += (targetClean - cleanShow)*Math.min(1, dt*2);
+  drawCity(t);
   if (state !== 'menu' && players.length){
     if (state === 'play'){
       playT += dt;
       players.forEach(p => updatePlayer(p, dt));
-      if (playT >= GAME_TIME){ players.forEach(p => p.held = false); endGame(); }
+      if (playT >= GAME_TIME) endGame();
     }
     if (mode === 'duo') drawDuoMiddle();
     players.forEach(p => p.mons.forEach(m => drawMonster(m, p, t)));
     players.forEach(drawMonsterLabels);
-    if (state === 'play'){ players.forEach(drawItem); players.forEach(drawItemLabel); }
+    if (state === 'play') players.forEach(drawItem);
+    players.forEach(drawHand);
     players.forEach(drawHUD);
+    if (state !== 'countdown') drawCleanBar();
     players.forEach(p => drawMsg(p, dt));
     if (state === 'countdown') drawCountdown(dt);
     drawBanner(dt);
   }
   drawParticles(dt);
-  players.forEach(drawHand);
   requestAnimationFrame(loop);
 }
-function pixelTitle(el, text, color='#ffcf33'){
-  const sz = 22, c = document.createElement('canvas'), x = c.getContext('2d');
-  x.font = `800 ${sz}px ${THAI}`;
-  c.width = Math.ceil(x.measureText(text).width) + 12; c.height = sz*1.7;
-  x.font = `800 ${sz}px ${THAI}`; x.textBaseline = 'middle'; x.lineJoin = 'miter';
-  x.lineWidth = 6; x.strokeStyle = '#000'; x.strokeText(text, 6, c.height/2+2);
-  x.fillStyle = color; x.fillText(text, 6, c.height/2+2);
-  const scale = Math.min(3, (Math.min(innerWidth*0.82, 820)) / c.width);
-  c.style.width = c.width*scale + 'px'; c.style.height = c.height*scale + 'px';
-  el.innerHTML = ''; el.appendChild(c);
-}
-window.__p = () => players;
-document.fonts.ready.then(()=> pixelTitle(document.querySelector('#start h1'), 'มอนสเตอร์หิวขยะ!', '#7be39a'));
+window.__p = () => ({players, clean, state});
 resize(); initHands(); requestAnimationFrame(loop);
 </script>
 </body>
