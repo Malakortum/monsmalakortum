@@ -31,7 +31,7 @@
 
 <div id="start" class="card">
   <h1>มอนสเตอร์หิวขยะ!</h1>
-  <p>เมืองของเราเต็มไปด้วยขยะ! ใช้<b>ปลายนิ้วชี้จิ้มขยะ</b> แล้ว<b>ลากไปป้อน</b>มอนสเตอร์ให้ถูกตัว<br>ยิ่งป้อนถูก เมืองยิ่งสะอาดขึ้น!</p>
+  <p>เมืองของเราเต็มไปด้วยขยะ! เอามือไปที่ขยะแล้ว<b>กำมือ</b>เพื่อจับ<br>ลากไปเหนือมอนสเตอร์ให้ถูกตัว แล้ว<b>แบมือ</b>ปล่อยลงปาก ยิ่งป้อนถูก เมืองยิ่งสะอาด!</p>
   <div class="row legend">
     <span style="background:#3fb35f">ขยะเปียก</span><span style="background:#f2b705">รีไซเคิล</span>
     <span style="background:#2f8fe0">ขยะทั่วไป</span><span style="background:#e5484d">ขยะอันตราย</span>
@@ -175,37 +175,48 @@ function nextItem(p){
 const BONES=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
 const PALM = [[0,9],[0,13],[1,5],[2,5],[5,13],[9,17],[0,5]]; // เส้นเสริมให้ฝ่ามือทึบ ขยะไม่ลอดง่าย
 const COLLIDE = BONES.concat(PALM);
-function tip(p){ // ปลายนิ้วชี้ (จุดที่ 8) หรือเมาส์
-  if (p.hand) return p.hand.pts[8];
-  if (p.mouse) return p.mouse;
+function grip(p){ // ตำแหน่งกลางฝ่ามือ + สถานะกำมือ
+  if (p.hand) return {x:p.hand.c.x, y:p.hand.c.y, closed:p.hand.closed, hr:p.hand.hr};
+  if (p.mouse) return {x:p.mouse.x, y:p.mouse.y, closed:!!p.mouse.down, hr:Math.min(W,H)*0.085};
   return null;
 }
 function updatePlayer(p, dt){
   for (const m of p.mons){ m.chomp = Math.max(0,m.chomp-dt); m.happy = Math.max(0,m.happy-dt); m.yuck = Math.max(0,m.yuck-dt); m.shake = Math.max(0,m.shake-dt*2); }
   const it = p.item; if (!it) return;
-  const R = p.R, f = tip(p);
+  const R = p.R, h = grip(p);
+  it.near = false;
   if (it.spit > 0){ // ถูกคายออกมา
     it.spit -= dt; it.vy += H*2.5*dt; it.x += it.vx*dt; it.y += it.vy*dt;
     it.x = Math.max(p.x0+R, Math.min(p.x1-R, it.x));
-    if (it.spit <= 0) it.y = Math.min(it.y, H*0.35);
-  } else if (!f){ p.lost = (p.lost||0) + dt; if (it.held && p.lost > 0.6) it.held = false; }
-  else {
-    p.lost = 0;
-    if (!it.held && Math.hypot(it.x - f.x, it.y - f.y) < R*1.3){ it.held = true; sfx.bump(0.5); }
-    if (it.held){
-      it.x += (f.x - it.x)*0.6; it.y += (f.y - it.y)*0.6;
+    if (it.spit <= 0){ it.y = Math.min(it.y, H*0.35); it.falling = false; }
+  } else if (it.held){
+    if (!h){ p.lost = (p.lost||0) + dt; if (p.lost > 0.6){ it.held = false; it.falling = true; it.vy = 0; } }
+    else {
+      p.lost = 0;
+      it.x += (h.x - it.x)*0.6; it.y += (h.y - it.y)*0.6;
       it.x = Math.max(p.x0+R, Math.min(p.x1-R, it.x));
-      const m = p.mons.find(m => it.x > m.x - 10 && it.x < m.x + m.w + 10 && it.y > m.y + m.h*0.05);
-      if (m){ feed(p, m); return; }
+      if (!h.closed){ it.held = false; it.falling = true; it.vy = 0; sfx.bump(0.2); } // แบมือ = ปล่อย
     }
-  }
-  if (!it.held && it.spit <= 0){ // ลอยลงมาแล้วรอให้จิ้ม
+  } else if (it.falling){ // ร่วงลงหลังปล่อยมือ
+    it.vy += H*2.2*dt; it.y += it.vy*dt;
+    if (it.y > H + R){ it.falling = false; it.y = -R; }
+  } else {
     it.wob = (it.wob||0) + dt*2; const stopY = H*0.33;
     if (it.y < stopY) it.y = Math.min(stopY, it.y + H*0.3*dt); else it.y = stopY + Math.sin(it.wob)*12;
+    if (h && Math.hypot(it.x - h.x, it.y - h.y) < h.hr + R*0.6){ // ขยะอยู่ในวงฝ่ามือ
+      it.near = true;
+      if (h.closed && !p.wasClosed){ it.held = true; sfx.bump(0.6); } // กำมือตอนอยู่ใกล้ = จับ
+    }
+  }
+  p.wasClosed = h ? h.closed : false;
+  // ร่วงลงปากมอนสเตอร์
+  if ((it.falling || it.held) && it.spit <= 0){
+    const m = p.mons.find(m => it.x > m.x && it.x < m.x + m.w && it.y > m.y + m.h*0.12);
+    if (m){ feed(p, m); return; }
   }
   it.rot = it.held ? 0 : Math.sin((it.wob||0))*0.15;
   for (const m of p.mons){
-    const near = it.held ? Math.max(0, 1 - Math.hypot(it.x-(m.x+m.w/2), it.y-(m.y+m.h*0.45)) / (m.w*1.6)) : 0;
+    const near = (it.held || it.falling) ? Math.max(0, 1 - Math.hypot(it.x-(m.x+m.w/2), it.y-(m.y+m.h*0.45)) / (m.w*1.6)) : 0;
     m.open += (near - m.open)*Math.min(1, dt*10);
   }
 }
@@ -222,7 +233,7 @@ function feed(p, m){
   } else {
     p.wrong++; p.combo = 0; m.yuck = 1; m.shake = 1; sfx.yuck();
     p.msg = {ok:false, title:`แหวะ! ${it.n} ไม่ใช่${m.name}`, text:`ต้องป้อนให้ตัว "${MONSTERS[it.b].name}" นะ`, t:2.4};
-    it.held = false; it.y = m.y - p.R; it.vy = -H*1.3; it.vx = (Math.random()-0.5)*H*0.8; it.spit = 0.7;
+    it.held = false; it.falling = false; it.y = m.y - p.R; it.vy = -H*1.3; it.vx = (Math.random()-0.5)*H*0.8; it.spit = 0.7;
   }
 }
 function sparkle(x, y, cols, n){
@@ -261,6 +272,8 @@ function setTitle(text, color){ const el = document.getElementById('endTitle'); 
 
 // ---------- จับมือ ----------
 let handOK = false, landmarker = null, lastVideoTime = -1, mouse = null;
+addEventListener('mousedown', ()=>{ if (mouse) mouse.down = true; });
+addEventListener('mouseup', ()=>{ if (mouse) mouse.down = false; });
 addEventListener('mousemove', e=>{
   if (handOK) return;
   const now = performance.now();
@@ -307,7 +320,11 @@ function trackHands(dt){
     // ทำให้นิ่งขึ้นนิดหน่อย และคำนวณความเร็วของทุกจุดบนมือ
     const pts = f.pts.map((q,k) => prev ? {x: prev.pts[k].x + (q.x - prev.pts[k].x)*0.75, y: prev.pts[k].y + (q.y - prev.pts[k].y)*0.75} : q);
     const vel = pts.map((q,k) => prev ? {x:(q.x - prev.pts[k].x)/fdt, y:(q.y - prev.pts[k].y)/fdt} : {x:0,y:0});
-    p.hand = {pts, vel, t: now};
+    const d = (a,b)=>Math.hypot(pts[a].x-pts[b].x, pts[a].y-pts[b].y), palm = d(0,9) || 1;
+    const ratio = (d(8,0)+d(12,0)+d(16,0)+d(20,0))/4/palm;
+    const was = prev ? prev.closed : false, closed = was ? ratio < 1.55 : ratio < 1.25;
+    const hr = Math.max(Math.min(W,H)*0.085, palm*1.05); // วงฝ่ามือใหญ่เกือบเต็มฝ่ามือ
+    p.hand = {pts, vel, t: now, closed, hr, c: {x:(pts[0].x+pts[5].x+pts[9].x+pts[13].x+pts[17].x)/5, y:(pts[0].y+pts[5].y+pts[9].y+pts[13].y+pts[17].y)/5}};
   });
 }
 
@@ -457,24 +474,31 @@ function drawItem(p){
   ctx.save(); ctx.translate(it.x, it.y);
   ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.arc(3, 6, r, 0, Math.PI*2); ctx.fill();
   ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = it.held ? '#ffd23f' : 'rgba(0,0,0,.12)'; ctx.lineWidth = 6; ctx.stroke();
+  ctx.strokeStyle = it.held ? '#ffd23f' : it.near ? '#3fb35f' : 'rgba(0,0,0,.12)'; ctx.lineWidth = it.near ? 9 : 6; ctx.stroke();
   ctx.rotate(it.rot);
   ctx.font = `${r*1.25}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(it.e, 0, r*0.06);
   ctx.restore();
-  textOutlined(it.n, it.x, it.y - r - Math.max(16, r*0.42), Math.max(16, r*0.42));
+  textOutlined(it.near ? 'กำเลย!' : it.n, it.x, it.y - r - Math.max(16, r*0.42), Math.max(16, r*0.42), it.near ? '#7dff9c' : '#fff');
 }
 function drawHand(p){
-  const col = mode==='duo' ? P_COLORS[p.idx] : '#2f8fe0', f = tip(p);
-  if (p.hand){ // มือจาง ๆ ให้รู้ว่ากล้องเห็นมือ
-    const pts = p.hand.pts; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.lineWidth = 5;
-    for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); }
+  const col = mode==='duo' ? P_COLORS[p.idx] : '#2f8fe0', g = grip(p);
+  if (!g) return;
+  const held = p.item && p.item.held;
+  if (p.hand){ // หน้าตามือแบบเดิม: เส้นบาง + จุดทุกข้อ + วงกลมกลางฝ่ามือ
+    const pts = p.hand.pts; ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(0,0,0,.6)'; ctx.lineWidth = 8; for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(120,255,200,.95)'; ctx.lineWidth = 4; for (const [a,b] of BONES){ ctx.beginPath(); ctx.moveTo(pts[a].x,pts[a].y); ctx.lineTo(pts[b].x,pts[b].y); ctx.stroke(); }
+    ctx.fillStyle = '#fff'; for (const q of pts){ ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, Math.PI*2); ctx.fill(); }
   }
-  if (!f) return;
-  const held = p.item && p.item.held, r = Math.min(W,H)*0.028;
-  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.arc(f.x + 2, f.y + 4, r + 6, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(f.x, f.y, r + 6, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = held ? '#ffd23f' : col; ctx.beginPath(); ctx.arc(f.x, f.y, r, 0, Math.PI*2); ctx.fill();
-  if (!held){ const k = (performance.now()/700) % 1; ctx.strokeStyle = `rgba(255,255,255,${1-k})`; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(f.x, f.y, r + 8 + k*24, 0, Math.PI*2); ctx.stroke(); }
+  { const r = g.hr; ctx.beginPath(); ctx.arc(g.x, g.y, r, 0, Math.PI*2);
+    ctx.fillStyle = held || g.closed ? 'rgba(255,210,63,.2)' : 'rgba(255,255,255,.12)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.6)'; ctx.lineWidth = 10; ctx.stroke();
+    ctx.strokeStyle = held || g.closed ? '#ffd23f' : (mode==='duo' ? col : '#ffffff'); ctx.lineWidth = 6; ctx.stroke();
+    if (!p.hand){ ctx.font = `${r*1.2}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(g.closed ? '✊' : '🖐️', g.x, g.y); } }
+  // ป้ายบอกสถานะ
+  const t = held ? 'แบมือเพื่อปล่อย' : g.closed ? 'กำอยู่' : '', f = Math.max(14, Math.min(W,H)*0.024);
+  if (t){ ctx.font = `800 ${f}px ${FONT}`; const w = ctx.measureText(t).width + 24; ctx.fillStyle = 'rgba(30,45,60,.8)'; ctx.beginPath(); ctx.roundRect(g.x - w/2, g.y + g.hr + 10, w, f*1.6, f*0.8); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, g.x, g.y + g.hr + 10 + f*0.8); }
 }
 function drawHUD(p){
   const f = Math.max(17, Math.min(W,H)*0.034), remain = Math.max(0, GAME_TIME - playT);
@@ -532,7 +556,7 @@ function drawCountdown(dt){
   if (countdown <= 0){ sfx.go(); state = 'play'; playT = 0; players.forEach(nextItem); banner = {text:'ไป!', t:0.8}; return; }
   const frac = countdown - Math.floor(countdown);
   textOutlined(String(n), W/2, H*0.38, Math.min(W,H)*(0.2 + 0.06*frac), '#ffd23f');
-  textOutlined(mode==='duo' ? 'ยืนคนละฝั่ง แล้วยกมือขึ้น!' : 'ชูนิ้วชี้ขึ้น เตรียมจิ้มขยะ!', W/2, H*0.56, Math.min(W,H)*0.05);
+  textOutlined(mode==='duo' ? 'ยืนคนละฝั่ง แล้วยกมือขึ้น!' : 'ยกมือขึ้น เตรียมกำขยะ!', W/2, H*0.56, Math.min(W,H)*0.05);
 }
 function drawBanner(dt){
   if (!banner) return;
