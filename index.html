@@ -177,7 +177,7 @@ const PALM = [[0,9],[0,13],[1,5],[2,5],[5,13],[9,17],[0,5]]; // เส้นเ�
 const COLLIDE = BONES.concat(PALM);
 function grip(p){ // ตำแหน่งกลางฝ่ามือ + สถานะกำมือ
   if (p.hand) return {x:p.hand.c.x, y:p.hand.c.y, closed:p.hand.closed, hr:p.hand.hr};
-  if (p.mouse) return {x:p.mouse.x, y:p.mouse.y, closed:!!p.mouse.down, hr:Math.min(W,H)*0.085};
+  if (p.mouse) return {x:p.mouse.x, y:p.mouse.y, closed:!!p.mouse.down, hr:Math.min(W,H)*0.031};
   return null;
 }
 function updatePlayer(p, dt){
@@ -323,7 +323,7 @@ function trackHands(dt){
     const d = (a,b)=>Math.hypot(pts[a].x-pts[b].x, pts[a].y-pts[b].y), palm = d(0,9) || 1;
     const ratio = (d(8,0)+d(12,0)+d(16,0)+d(20,0))/4/palm;
     const was = prev ? prev.closed : false, closed = was ? ratio < 1.55 : ratio < 1.25;
-    const hr = Math.max(Math.min(W,H)*0.085, palm*1.05); // วงฝ่ามือใหญ่เกือบเต็มฝ่ามือ
+    const hr = Math.max(Math.min(W,H)*0.031, palm*0.38); // วงฝ่ามือใหญ่เกือบเต็มฝ่ามือ
     p.hand = {pts, vel, t: now, closed, hr, c: {x:(pts[0].x+pts[5].x+pts[9].x+pts[13].x+pts[17].x)/5, y:(pts[0].y+pts[5].y+pts[9].y+pts[13].y+pts[17].y)/5}};
   });
 }
